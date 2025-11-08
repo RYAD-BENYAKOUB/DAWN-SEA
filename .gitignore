@@ -1,0 +1,7 @@
+# Fichiers à ignorer
+.env
+/vendor/
+node_modules/
+.idea/
+.vscode/
+*.log

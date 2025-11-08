@@ -1,0 +1,141 @@
+body {
+    background: linear-gradient(rgba(225, 220, 220, 0.575), rgba(246, 246, 246, 0.7)),
+    url('../../IMG/SIGN-UP.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    width: auto;
+}
+
+.logo {
+        
+    border-radius: 70px;
+    position: absolute; /* Positionnement précis */
+    top: 10px; /* Distance du haut */
+    left: 10px; /* Distance de la gauche */
+    width: 100px; /* Ajuste la taille selon ton besoin */
+    height: auto; /* Garde les proportions */
+        
+}
+h1{
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 100px;
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+
+}
+.para{
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    font-size: 30px;
+}
+#DS{
+    font-weight: bolder;
+    text-decoration: underline;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    font-size:30px;
+}
+.tech{
+    text-transform: uppercase;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    font-size: larger;
+}
+h2{
+    text-align: center;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: italic;
+    color: azure;
+}
+h3{
+    text-transform: capitalize;
+    color: azure;
+}
+   
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+#SRCH{
+    margin-left: 150px;
+}
+#Login{
+    margin-left: 20px;
+}
+#Sign{
+    margin-left: 10px; 
+}
+.logo-container {
+    display: flex;
+    align-items: center; /* Alignement vertical */
+    gap: 10px; /* Espacement entre l'image et le texte */
+}
+
+#FCB_LOGO {
+    width: 30px; /* Ajuste la taille selon le besoin */
+    height: auto;
+}
+.links-container {
+    display: flex;
+    flex-direction: column; /* Affiche les liens en colonne */
+    align-items: first baseline; /* Centre les liens sous le titre */
+    margin-left: 10px;
+}
+
+.links-container a {
+    text-decoration: none;
+    color: azure;
+    font-size: 14px;
+    margin-right:1000px ;
+}
+#contact {
+    margin-top: 30px;
+}
+
+.platform {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.platform .logo-container {
+    margin-bottom: 10px;
+}
+
+.platform .links-container {
+    margin-left: 0;
+}
+
+.platform .links-container a {
+    margin-right: 0;
+    margin-bottom: 5px;
+}
+.logo-navbar {
+    height: 70px;   /* ajuste selon tes besoins, par ex. 30px ou 50px */
+    width: auto;    /* pour garder les proportions */
+    border-radius: 10px; /* optionnel : pour arrondir un peu */
+}
+nav.navbar {
+    width: 100%;      /* occupe toute la largeur */
+    margin: 0 auto;   /* centre si nécessaire */
+    border-radius: 0; /* supprime les bords arrondis */
+    left: 0;
+    right: 0;
+    z-index: 1000;    /* s'assure qu'elle passe au-dessus */
+    position: fixed;
+    top: 0;
+}

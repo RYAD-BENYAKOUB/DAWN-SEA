@@ -1,0 +1,155 @@
+/* Structure principale */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(rgba(225, 220, 220, 0.575), rgba(246, 246, 246, 0.7)),
+                url('../../IMG/SIGN-UP.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Georgia, serif;
+    color: azure;
+}
+
+/* NAVBAR fixée en haut */
+header {
+    flex-shrink: 0;
+}
+
+nav.navbar {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 90px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.logo-navbar {
+    height: 90px;
+    width: auto;
+    border-radius: 10px;
+}
+
+/* Espace pour ne pas masquer le contenu */
+main {
+    flex: 1 0 auto;
+    padding-top: 160px; /* hauteur navbar */
+    padding-bottom: 100px; /* espace avant le footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur formulaire */
+#form-container {
+    max-width: 650px;
+    width: 100%;
+    margin: auto;
+}
+
+/* Style fieldset */
+fieldset {
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 3px solid #ffffff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Légende */
+legend {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+/* Libellés */
+label {
+    font-weight: bold;
+    color: white;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"],
+select {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Boutons */
+button {
+    padding: 10px 20px;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+button[type="reset"] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+/* Pied de page */
+footer {
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+}
+
+footer a {
+    color: lightblue;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer .platform {
+    margin: 10px;
+}
+
+.logo-container img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-container h3 {
+    margin-top: 5px;
+    font-size: 1rem;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    fieldset {
+        padding: 20px;
+    }
+
+    #form-container {
+        max-width: 95%;
+    }
+
+    .navbar-text {
+        font-size: 0.9rem;
+    }
+}
