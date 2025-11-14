@@ -12,12 +12,7 @@
         <link rel="stylesheet" href="assets/CSS/bootstrap.min.css">
         <!-- Custom CSS -->
         <link rel="stylesheet" href="assets/CSS/profil.css">
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-        <script>
-            const supabaseUrl = 'https://cwxdorskmuteodiiixts.supabase.co'; // Remplacez par votre URL
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eGRvcnNrbXV0ZW9kaWlpeHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0ODQ4NzAsImV4cCI6MjA2MTA2MDg3MH0.CcLms5Oh5HYpqVbsIe9WKZ8PN2jFGEPtzudJQ3liLA4'; // Remplacez par votre clé anonyme
-            const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        </script>  
+        
     </head>
 <body>
     <header>
