@@ -19,7 +19,7 @@ switch ($action) {
         }
 
         try {
-            $stmt = $pdo->prepare('SELECT ID_Utilisateur, Mot_de_passe, Prenom FROM utilisateur WHERE Email = :email');
+            $stmt = $pdo->prepare('SELECT "ID_Utilisateur", "Mot_de_passe", "Prenom" FROM "utilisateur" WHERE "Email" = :email');
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch();
 
@@ -88,7 +88,7 @@ switch ($action) {
 
         try {
             // Vérifier l'unicité de l'email
-            $stmt = $pdo->prepare('SELECT COUNT(*) FROM utilisateur WHERE Email = :email');
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM "utilisateur" WHERE "Email" = :email');
             $stmt->execute(['email' => $email]);
             if ($stmt->fetchColumn() > 0) {
                 echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé.']);
@@ -99,8 +99,8 @@ switch ($action) {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
             $phone  = $indicatif . $numero;
 
-            $sql = "INSERT INTO utilisateur 
-                    (Nom, Prenom, Email, Mot_de_passe, Num_de_telephone, Pays_de_naissance, Date_de_naissance)
+            $sql = "INSERT INTO \"utilisateur\" 
+                    (\"Nom\", \"Prenom\", \"Email\", \"Mot_de_passe\", \"Num_de_telephone\", \"Pays_de_naissance\", \"Date_de_naissance\")
                     VALUES 
                     (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss)";
             
@@ -134,7 +134,7 @@ switch ($action) {
     case 'status':
         if (isset($_SESSION['user_id'])) {
             try {
-                $stmt = $pdo->prepare('SELECT Prenom, Nom, Email FROM utilisateur WHERE ID_Utilisateur = :id');
+                $stmt = $pdo->prepare('SELECT "Prenom", "Nom", "Email" FROM "utilisateur" WHERE "ID_Utilisateur" = :id');
                 $stmt->execute(['id' => $_SESSION['user_id']]);
                 $user = $stmt->fetch();
 

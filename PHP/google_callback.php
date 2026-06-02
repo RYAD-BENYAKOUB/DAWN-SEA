@@ -72,7 +72,7 @@ if (empty($email)) {
 
 try {
     // 4. Vérifier si l'utilisateur existe déjà
-    $stmt = $pdo->prepare('SELECT ID_Utilisateur FROM utilisateur WHERE Email = :email');
+    $stmt = $pdo->prepare('SELECT "ID_Utilisateur" FROM "utilisateur" WHERE "Email" = :email');
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
 
@@ -88,10 +88,10 @@ try {
         $dummyPays = 'Non spécifié';
         $dummyDate = '2000-01-01';
 
-        $sql = "INSERT INTO utilisateur 
-                (Nom, Prenom, Email, Mot_de_passe, Num_de_telephone, Pays_de_naissance, Date_de_naissance)
+        $sql = 'INSERT INTO "utilisateur" 
+                ("Nom", "Prenom", "Email", "Mot_de_passe", "Num_de_telephone", "Pays_de_naissance", "Date_de_naissance")
                 VALUES 
-                (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss)";
+                (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss)';
         
         $stmtInsert = $pdo->prepare($sql);
         $stmtInsert->execute([

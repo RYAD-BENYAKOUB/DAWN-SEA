@@ -20,8 +20,8 @@ $input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 if ($method === 'GET') {
     // Récupérer les informations du profil
     try {
-        $stmt = $pdo->prepare("SELECT Nom, Prenom, Email, Num_de_telephone, Pays_de_naissance, Date_de_naissance 
-                               FROM utilisateur WHERE ID_Utilisateur = :id");
+        $stmt = $pdo->prepare('SELECT "Nom", "Prenom", "Email", "Num_de_telephone", "Pays_de_naissance", "Date_de_naissance" 
+                               FROM "utilisateur" WHERE "ID_Utilisateur" = :id');
         $stmt->execute(['id' => $user_id]);
         $user = $stmt->fetch();
 
@@ -67,18 +67,17 @@ if ($method === 'POST') {
 
         try {
             // Vérifier que le nouvel email n'appartient pas à un autre utilisateur
-            $stmt = $pdo->prepare('SELECT COUNT(*) FROM utilisateur WHERE Email = :email AND ID_Utilisateur != :id');
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM "utilisateur" WHERE "Email" = :email AND "ID_Utilisateur" != :id');
             $stmt->execute(['email' => $email, 'id' => $user_id]);
             if ($stmt->fetchColumn() > 0) {
                 echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé par un autre compte.']);
                 exit;
             }
 
-            // Mettre à jour les informations
-            $sql = "UPDATE utilisateur 
-                    SET Nom = :nom, Prenom = :prenom, Email = :email, 
-                        Num_de_telephone = :tel, Pays_de_naissance = :pays, Date_de_naissance = :date_naiss 
-                    WHERE ID_Utilisateur = :id";
+            $sql = "UPDATE \"utilisateur\" 
+                    SET \"Nom\" = :nom, \"Prenom\" = :prenom, \"Email\" = :email, 
+                        \"Num_de_telephone\" = :tel, \"Pays_de_naissance\" = :pays, \"Date_de_naissance\" = :date_naiss 
+                    WHERE \"ID_Utilisateur\" = :id";
             
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -100,7 +99,7 @@ if ($method === 'POST') {
 
     if ($action === 'delete') {
         try {
-            $stmt = $pdo->prepare("DELETE FROM utilisateur WHERE ID_Utilisateur = :id");
+            $stmt = $pdo->prepare('DELETE FROM "utilisateur" WHERE "ID_Utilisateur" = :id');
             $stmt->execute(['id' => $user_id]);
 
             // Détruire la session après suppression
