@@ -5,38 +5,38 @@
 -- 1. Table des utilisateurs
 CREATE TABLE IF NOT EXISTS "utilisateur" (
     "ID_Utilisateur" SERIAL PRIMARY KEY,
-    "Nom" VARCHAR(255) DEFAULT NULL,
-    "Prenom" VARCHAR(255) DEFAULT NULL,
-    "Email" VARCHAR(255) UNIQUE DEFAULT NULL,
-    "Mot_de_passe" VARCHAR(255) DEFAULT NULL,
+    "Nom" VARCHAR(30) DEFAULT NULL,
+    "Prenom" VARCHAR(30) DEFAULT NULL,
+    "Email" VARCHAR(50) UNIQUE DEFAULT NULL,
+    "Mot_de_passe" VARCHAR(50) DEFAULT NULL,
     "Num_de_telephone" VARCHAR(50) DEFAULT NULL,
-    "Pays_de_naissance" VARCHAR(100) DEFAULT NULL,
+    "Pays_de_naissance" VARCHAR(50) DEFAULT NULL,
     "Date_de_naissance" DATE DEFAULT NULL
 );
 
 -- 2. Table des lieux
 CREATE TABLE IF NOT EXISTS "lieu" (
     "ID_Lieu" SERIAL PRIMARY KEY,
-    "Nom" VARCHAR(255) DEFAULT NULL,
+    "Nom" VARCHAR(50) DEFAULT NULL,
     "Description" TEXT DEFAULT NULL,
-    "Address" VARCHAR(255) DEFAULT NULL,
+    "Address" VARCHAR(50) DEFAULT NULL,
     "Image" BYTEA DEFAULT NULL
 );
 
 -- 3. Table des tags
 CREATE TABLE IF NOT EXISTS "tag" (
     "ID_Tag" SERIAL PRIMARY KEY,
-    "Nom" VARCHAR(255) DEFAULT NULL
+    "Nom" VARCHAR(50) DEFAULT NULL
 );
 
 -- 4. Table des recommandations
 CREATE TABLE IF NOT EXISTS "recommandation" (
     "ID_Recommandation" SERIAL PRIMARY KEY,
     "ID_Lieu" INT REFERENCES "lieu"("ID_Lieu") ON DELETE CASCADE,
-    "Titre" VARCHAR(255) DEFAULT NULL,
+    "Titre" VARCHAR(55) DEFAULT NULL,
     "Description" TEXT DEFAULT NULL,
     "Note_Generale" INT DEFAULT NULL,
-    "Image" VARCHAR(255) DEFAULT NULL
+    "Image" VARCHAR(55) DEFAULT NULL
 );
 
 -- 5. Table de jointure recommandation <-> tag
