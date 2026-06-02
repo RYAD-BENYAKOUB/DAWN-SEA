@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dawn & Sea - Espace Administration</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/CSS/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/CSS/style.css">
+    <style>
+        /* Styles spécifiques pour le dashboard d'administration */
+        .admin-container {
+            margin-top: 120px;
+            margin-bottom: 50px;
+        }
+        .admin-card {
+            background-color: rgba(30, 30, 30, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            color: #fff;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .stat-box {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(255, 193, 7, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        .table-responsive {
+            background: rgba(20, 20, 20, 0.4);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        .table {
+            color: #fff;
+            margin-bottom: 0;
+        }
+        .table th {
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffc107;
+        }
+        .table td {
+            border-color: rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+        .nav-tabs-admin {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+        }
+        .admin-tab-btn {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .modal-content-dark {
+            background-color: #212529;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+        .modal-header-dark {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .modal-footer-dark {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .form-control-dark {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .form-control-dark:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #ffc107;
+            color: #fff;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-fluid px-0">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark p-2">
+                <img src="IMG/4-removebg-preview.png" alt="Mon Logo" class="navbar-brand logo-navbar">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#x">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Conteneur pour la navbar dynamique -->
+                <div id="x" class="collapse navbar-collapse w-100 justify-content-center"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container admin-container">
+        <div class="admin-card">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <h2 class="text-start m-0 text-light">Tableau de bord d'administration</h2>
+                <div class="nav-tabs-admin">
+                    <button class="btn btn-primary admin-tab-btn active" data-target="section-overview">Vue générale</button>
+                    <button class="btn btn-outline-light admin-tab-btn" data-target="section-destinations">Destinations</button>
+                    <button class="btn btn-outline-light admin-tab-btn" data-target="section-users">Utilisateurs & Rôles</button>
+                </div>
+            </div>
+
+            <!-- SECTION 1 : VUE GÉNÉRALE -->
+            <section id="section-overview" class="admin-section">
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <h5 class="text-warning">Utilisateurs enregistrés</h5>
+                            <h2 id="stat-users" class="fw-bold my-3">...</h2>
+                            <p class="text-muted m-0">Inscrits sur la plateforme</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <h5 class="text-warning">Administrateurs</h5>
+                            <h2 id="stat-admins" class="fw-bold my-3">...</h2>
+                            <p class="text-muted m-0">Comptes avec accès de gestion</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <h5 class="text-warning">Destinations (Lieux)</h5>
+                            <h2 id="stat-destinations" class="fw-bold my-3">...</h2>
+                            <p class="text-muted m-0">Lieux touristiques créés</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <p class="text-muted">Utilisez les onglets ci-dessus pour administrer la base de données et modifier les privilèges des utilisateurs.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 2 : GESTION DES DESTINATIONS -->
+            <section id="section-destinations" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-warning m-0">Liste des Destinations</h4>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDestinationModal">
+                        + Ajouter une destination
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Lieu</th>
+                                <th>Wilaya</th>
+                                <th>Titre Recommandation</th>
+                                <th>Note</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="destinations-tbody">
+                            <tr>
+                                <td colspan="6" class="text-center text-light">Chargement des destinations...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 3 : GESTION DES UTILISATEURS & RÔLES -->
+            <section id="section-users" class="admin-section d-none">
+                <h4 class="text-warning mb-3">Gestion des Utilisateurs</h4>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom & Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Pays</th>
+                                <th>Rôle</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-tbody">
+                            <tr>
+                                <td colspan="7" class="text-center text-light">Chargement des utilisateurs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- MODAL D'AJOUT DE DESTINATION -->
+    <div class="modal fade" id="addDestinationModal" tabindex="-1" aria-labelledby="addDestinationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-content-dark">
+                <form id="add-destination-form">
+                    <div class="modal-header modal-header-dark">
+                        <h5 class="modal-title text-warning" id="addDestinationModalLabel">Créer un nouveau lieu & recommandation</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Partie Lieu -->
+                        <h6 class="text-warning border-bottom border-secondary pb-2 mb-3">1. Informations sur le Lieu</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="lieu_nom" class="form-label">Nom du Lieu *</label>
+                                <input type="text" class="form-control form-control-dark" id="lieu_nom" name="lieu_nom" placeholder="Ex: Fort Santa Cruz" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lieu_address" class="form-label">Wilaya / Adresse *</label>
+                                <input type="text" class="form-control form-control-dark" id="lieu_address" name="lieu_address" placeholder="Ex: Oran" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="lieu_description" class="form-label">Description du lieu *</label>
+                                <textarea class="form-control form-control-dark" id="lieu_description" name="lieu_description" rows="2" placeholder="Ex: Une forteresse espagnole..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="lieu_image" class="form-label">Image illustrative * (Fichier image)</label>
+                                <input class="form-control form-control-dark" type="file" id="lieu_image" accept="image/*" required>
+                            </div>
+                        </div>
+
+                        <!-- Partie Recommandation -->
+                        <h6 class="text-warning border-bottom border-secondary pb-2 mb-3">2. Recommandation & Évaluation</h6>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="rec_titre" class="form-label">Titre de la recommandation *</label>
+                                <input type="text" class="form-control form-control-dark" id="rec_titre" name="rec_titre" placeholder="Ex: Visite culturelle et panoramique" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="rec_note" class="form-label">Évaluation générale *</label>
+                                <select class="form-select form-control-dark text-white bg-dark" id="rec_note" name="rec_note" required>
+                                    <option value="5" selected>5 ⭐ (Excellent)</option>
+                                    <option value="4">4 ⭐ (Très bien)</option>
+                                    <option value="3">3 ⭐ (Moyen)</option>
+                                    <option value="2">2 ⭐ (Faible)</option>
+                                    <option value="1">1 ⭐ (Très mauvais)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="rec_description" class="form-label">Détails de la recommandation *</label>
+                                <textarea class="form-control form-control-dark" id="rec_description" name="rec_description" rows="3" placeholder="Ex: Prévoyez de bonnes chaussures et montez avant le coucher du soleil..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="tags" class="form-label">Tags associés (séparés par des virgules)</label>
+                                <input type="text" class="form-control form-control-dark" id="tags" name="tags" placeholder="Ex: Historique, Panorama, Famille">
+                                <div class="form-text text-muted">Exemples: Historique, Plage, Nature, Randonnée</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer modal-footer-dark">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-warning text-dark fw-bold">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <p class="text-light bg-dark mt-3">&copy; 2025 Dawn & Sea. Tous droits réservés.</p>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="assets/JS/bootstrap.bundle.min.js"></script>
+    <script src="assets/JS/main.js"></script>
+</body>
+</html>

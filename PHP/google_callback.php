@@ -72,13 +72,14 @@ if (empty($email)) {
 
 try {
     // 4. Vérifier si l'utilisateur existe déjà
-    $stmt = $pdo->prepare('SELECT "ID_Utilisateur" FROM "utilisateur" WHERE "Email" = :email');
+    $stmt = $pdo->prepare('SELECT "ID_Utilisateur", "Role" FROM "utilisateur" WHERE "Email" = :email');
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
 
     if ($user) {
         // L'utilisateur existe déjà, on le connecte
         $_SESSION['user_id'] = $user['ID_Utilisateur'];
+        $_SESSION['user_role'] = $user['Role'];
     } else {
         // Création automatique de compte
         $nom       = !empty($familyName) ? $familyName : 'GoogleUser';
@@ -87,11 +88,12 @@ try {
         $dummyTel  = '';
         $dummyPays = 'Non spécifié';
         $dummyDate = '2000-01-01';
+        $role      = ($email === 'ryadbenyakoub@gmail.com') ? 'superadmin' : 'user';
 
         $sql = 'INSERT INTO "utilisateur" 
-                ("Nom", "Prenom", "Email", "Mot_de_passe", "Num_de_telephone", "Pays_de_naissance", "Date_de_naissance")
+                ("Nom", "Prenom", "Email", "Mot_de_passe", "Num_de_telephone", "Pays_de_naissance", "Date_de_naissance", "Role")
                 VALUES 
-                (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss)';
+                (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss, :role)';
         
         $stmtInsert = $pdo->prepare($sql);
         $stmtInsert->execute([
@@ -101,10 +103,12 @@ try {
             'mdp'       => $dummyMdp,
             'tel'       => $dummyTel,
             'pays'      => $dummyPays,
-            'dateNaiss' => $dummyDate
+            'dateNaiss' => $dummyDate,
+            'role'      => $role
         ]);
 
         $_SESSION['user_id'] = $pdo->lastInsertId();
+        $_SESSION['user_role'] = $role;
     }
 
     // Rediriger l'utilisateur connecté vers l'accueil

@@ -11,8 +11,14 @@ CREATE TABLE IF NOT EXISTS "utilisateur" (
     "Mot_de_passe" VARCHAR(50) DEFAULT NULL,
     "Num_de_telephone" VARCHAR(50) DEFAULT NULL,
     "Pays_de_naissance" VARCHAR(50) DEFAULT NULL,
-    "Date_de_naissance" DATE DEFAULT NULL
+    "Date_de_naissance" DATE DEFAULT NULL,
+    "Role" VARCHAR(20) DEFAULT 'user'
 );
+
+-- Note de migration pour bases existantes :
+-- ALTER TABLE "utilisateur" ADD COLUMN IF NOT EXISTS "Role" VARCHAR(20) DEFAULT 'user';
+-- UPDATE "utilisateur" SET "Role" = 'superadmin' WHERE "Email" = 'ryadbenyakoub@gmail.com';
+
 
 -- 2. Table des lieux
 CREATE TABLE IF NOT EXISTS "lieu" (

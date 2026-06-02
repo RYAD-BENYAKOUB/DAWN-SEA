@@ -41,6 +41,13 @@ async function initApp() {
         } else {
             initExplorePage();
         }
+    } else if (page === 'admin.html') {
+        if (!session.logged_in || !(session.user.role === 'admin' || session.user.role === 'superadmin')) {
+            alert("Accès interdit : réservé aux administrateurs.");
+            window.location.href = 'index.html';
+        } else {
+            initAdminPage(session.user);
+        }
     } else if (page === 'index.html' || page === '') {
         initIndexPage(session.logged_in);
     }
@@ -75,6 +82,13 @@ function updateNavbar(session) {
     if (session.logged_in) {
         navHTML += `
             <li class="nav-item"><a class="nav-link" href="profil.html">Profil</a></li>
+        `;
+        if (session.user.role === 'admin' || session.user.role === 'superadmin') {
+            navHTML += `
+                <li class="nav-item"><a class="nav-link text-warning fw-bold" href="admin.html">Admin</a></li>
+            `;
+        }
+        navHTML += `
             <li class="nav-item">
                 <button class="nav-link btn btn-outline-danger btn-sm text-white px-3" onclick="handleLogout()">Logout</button>
             </li>
@@ -433,3 +447,299 @@ function showToast(message, type = 'danger') {
         setTimeout(() => alertEl.remove(), 150);
     }, 5000);
 }
+
+// 11. Dashboard d'Administration
+async function initAdminPage(currentUser) {
+    // 1. Initialiser le basculement des onglets de navigation
+    const tabButtons = document.querySelectorAll('.admin-tab-btn');
+    const sections = document.querySelectorAll('.admin-section');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabButtons.forEach(b => b.classList.remove('active', 'btn-primary'));
+            tabButtons.forEach(b => b.classList.add('btn-outline-light'));
+            btn.classList.remove('btn-outline-light');
+            btn.classList.add('active', 'btn-primary');
+
+            const targetSectionId = btn.getAttribute('data-target');
+            sections.forEach(sec => {
+                if (sec.id === targetSectionId) {
+                    sec.classList.remove('d-none');
+                } else {
+                    sec.classList.add('d-none');
+                }
+            });
+        });
+    });
+
+    // 2. Charger les données au chargement
+    await loadStats();
+    await loadDestinations();
+    await loadUsers(currentUser);
+
+    // 3. Gestionnaire du formulaire d'ajout de destination
+    const addForm = document.getElementById('add-destination-form');
+    if (addForm) {
+        addForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = addForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Adding...';
+
+            const formData = new FormData(addForm);
+            const data = Object.fromEntries(formData.entries());
+
+            const fileInput = document.getElementById('lieu_image');
+            let imageBase64 = '';
+
+            const sendPayload = async (imgBase64) => {
+                data.lieu_image = imgBase64;
+                try {
+                    const response = await fetch(`${API_BASE}/admin_action.php?action=add_destination`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        showToast(result.message, 'success');
+                        addForm.reset();
+                        // Fermer le modal Bootstrap si utilisé
+                        const modalEl = document.getElementById('addDestinationModal');
+                        if (modalEl) {
+                            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                            if (modalInstance) modalInstance.hide();
+                        }
+                        // Recharger les données
+                        await loadStats();
+                        await loadDestinations();
+                    } else {
+                        showToast(result.message, 'danger');
+                    }
+                } catch (err) {
+                    showToast("Erreur lors de la création de la destination.", "danger");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Enregistrer';
+                }
+            };
+
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    await sendPayload(reader.result);
+                };
+                reader.onerror = () => {
+                    showToast("Erreur lors de la lecture de l'image.", "danger");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Enregistrer';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                await sendPayload('');
+            }
+        });
+    }
+}
+
+// Charger les statistiques globales
+async function loadStats() {
+    try {
+        const response = await fetch(`${API_BASE}/admin_action.php?action=stats`);
+        const result = await response.json();
+        if (result.success) {
+            document.getElementById('stat-users').innerText = result.stats.total_users;
+            document.getElementById('stat-admins').innerText = result.stats.total_admins;
+            document.getElementById('stat-destinations').innerText = result.stats.total_recs;
+        }
+    } catch (e) {
+        console.error("Erreur stats :", e);
+    }
+}
+
+// Charger et lister les destinations (lieux et recommandations)
+async function loadDestinations() {
+    const tbody = document.getElementById('destinations-tbody');
+    if (!tbody) return;
+
+    try {
+        const response = await fetch(`${API_BASE}/admin_action.php?action=get_destinations`);
+        const result = await response.json();
+
+        if (result.success) {
+            if (result.data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-light">Aucune destination enregistrée.</td></tr>';
+                return;
+            }
+
+            let html = '';
+            result.data.forEach(item => {
+                html += `
+                    <tr>
+                        <td class="text-warning fw-bold">${item.id}</td>
+                        <td class="text-light fw-bold">${escapeHTML(item.lieu_nom)}</td>
+                        <td class="text-light">${escapeHTML(item.address)}</td>
+                        <td class="text-light fw-bold">${escapeHTML(item.titre)}</td>
+                        <td class="text-warning">${escapeHTML(String(item.note_generale))} ⭐</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteDestination(${item.id})">
+                                Supprimer
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        } else {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">${escapeHTML(result.message)}</td></tr>`;
+        }
+    } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Erreur de chargement.</td></tr>';
+    }
+}
+
+// Supprimer une destination
+async function deleteDestination(recId) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette recommandation de destination ? S'il s'agit de l'unique recommandation pour ce lieu, le lieu sera également supprimé.")) {
+        try {
+            const response = await fetch(`${API_BASE}/admin_action.php?action=delete_destination`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rec_id: recId })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                showToast(result.message, 'success');
+                await loadStats();
+                await loadDestinations();
+            } else {
+                showToast(result.message, 'danger');
+            }
+        } catch (e) {
+            showToast("Erreur lors de la suppression de la destination.", "danger");
+        }
+    }
+}
+
+// Charger et lister les utilisateurs et rôles
+async function loadUsers(currentUser) {
+    const tbody = document.getElementById('users-tbody');
+    if (!tbody) return;
+
+    try {
+        const response = await fetch(`${API_BASE}/admin_action.php?action=get_users`);
+        const result = await response.json();
+
+        if (result.success) {
+            let html = '';
+            result.data.forEach(user => {
+                const isSuperAdmin = user.role === 'superadmin' || user.email === 'ryadbenyakoub@gmail.com';
+                const isCurrentUser = user.email === currentUser.email;
+
+                // Génération du sélecteur de rôle (réservé uniquement au superadmin et bloqué sur sa propre ligne)
+                let roleControl = '';
+                if (currentUser.role === 'superadmin') {
+                    if (isSuperAdmin) {
+                        roleControl = `<span class="badge bg-danger px-3 py-2">Superadmin</span>`;
+                    } else {
+                        roleControl = `
+                            <select class="form-select form-select-sm bg-dark text-light border-secondary w-auto d-inline-block"
+                                    onchange="changeUserRole(${user.id}, this.value)">
+                                <option value="user" ${user.role === 'user' ? 'selected' : ''}>Utilisateur</option>
+                                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            </select>
+                        `;
+                    }
+                } else {
+                    // Les admins voient le rôle en texte sans contrôle
+                    let badgeClass = 'bg-secondary';
+                    if (user.role === 'admin') badgeClass = 'bg-info';
+                    if (user.role === 'superadmin') badgeClass = 'bg-danger';
+                    roleControl = `<span class="badge ${badgeClass} px-3 py-2">${escapeHTML(user.role)}</span>`;
+                }
+
+                // Actions : supprimer l'utilisateur (bloqué pour soi-même et pour le superadmin)
+                let actionBtn = '';
+                if (isSuperAdmin || isCurrentUser) {
+                    actionBtn = `<span class="text-muted italic">Aucune</span>`;
+                } else {
+                    actionBtn = `
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">
+                            Supprimer
+                        </button>
+                    `;
+                }
+
+                html += `
+                    <tr>
+                        <td class="text-warning">${user.id}</td>
+                        <td class="text-light fw-bold">${escapeHTML(user.nom)} ${escapeHTML(user.prenom)}</td>
+                        <td class="text-light">${escapeHTML(user.email)}</td>
+                        <td class="text-light">${escapeHTML(user.num_de_telephone || 'Non spécifié')}</td>
+                        <td class="text-light">${escapeHTML(user.pays_de_naissance || 'Non spécifié')}</td>
+                        <td>${roleControl}</td>
+                        <td>${actionBtn}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        } else {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">${escapeHTML(result.message)}</td></tr>`;
+        }
+    } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Erreur de chargement des utilisateurs.</td></tr>';
+    }
+}
+
+// Modifier le rôle d'un utilisateur (Action Superadmin uniquement)
+async function changeUserRole(userId, newRole) {
+    try {
+        const response = await fetch(`${API_BASE}/admin_action.php?action=update_role`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, role: newRole })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            showToast(result.message, 'success');
+            await loadStats();
+            // Recharger la liste avec les nouvelles infos
+            const session = await checkSession();
+            await loadUsers(session.user);
+        } else {
+            showToast(result.message, 'danger');
+        }
+    } catch (e) {
+        showToast("Erreur lors de la modification du rôle.", "danger");
+    }
+}
+
+// Supprimer un utilisateur
+async function deleteUser(userId) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer définitivement cet utilisateur de la plateforme ? Cette action est irréversible.")) {
+        try {
+            const response = await fetch(`${API_BASE}/admin_action.php?action=delete_user`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                showToast(result.message, 'success');
+                await loadStats();
+                const session = await checkSession();
+                await loadUsers(session.user);
+            } else {
+                showToast(result.message, 'danger');
+            }
+        } catch (e) {
+            showToast("Erreur lors de la suppression de l'utilisateur.", "danger");
+        }
+    }
+}
+

@@ -19,18 +19,20 @@ switch ($action) {
         }
 
         try {
-            $stmt = $pdo->prepare('SELECT "ID_Utilisateur", "Mot_de_passe", "Prenom" FROM "utilisateur" WHERE "Email" = :email');
+            $stmt = $pdo->prepare('SELECT "ID_Utilisateur", "Mot_de_passe", "Prenom", "Role" FROM "utilisateur" WHERE "Email" = :email');
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch();
 
             if ($user) {
                 if (password_verify($password, $user['Mot_de_passe'])) {
                     $_SESSION['user_id'] = $user['ID_Utilisateur'];
+                    $_SESSION['user_role'] = $user['Role'];
                     echo json_encode([
                         'success' => true,
                         'message' => 'Connexion réussie !',
                         'user' => [
-                            'prenom' => $user['Prenom']
+                            'prenom' => $user['Prenom'],
+                            'role'   => $user['Role']
                         ]
                     ]);
                 } else {
@@ -98,11 +100,12 @@ switch ($action) {
             // Insérer l'utilisateur
             $hashed = password_hash($password, PASSWORD_DEFAULT);
             $phone  = $indicatif . $numero;
+            $role   = ($email === 'ryadbenyakoub@gmail.com') ? 'superadmin' : 'user';
 
             $sql = "INSERT INTO \"utilisateur\" 
-                    (\"Nom\", \"Prenom\", \"Email\", \"Mot_de_passe\", \"Num_de_telephone\", \"Pays_de_naissance\", \"Date_de_naissance\")
+                    (\"Nom\", \"Prenom\", \"Email\", \"Mot_de_passe\", \"Num_de_telephone\", \"Pays_de_naissance\", \"Date_de_naissance\", \"Role\")
                     VALUES 
-                    (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss)";
+                    (:nom, :prenom, :email, :mdp, :tel, :pays, :dateNaiss, :role)";
             
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -112,18 +115,21 @@ switch ($action) {
                 'mdp'       => $hashed,
                 'tel'       => $phone,
                 'pays'      => $pays,
-                'dateNaiss' => $dateNaiss
+                'dateNaiss' => $dateNaiss,
+                'role'      => $role
             ]);
 
             // Connecter automatiquement l'utilisateur après inscription
             $newUserId = $pdo->lastInsertId();
             $_SESSION['user_id'] = $newUserId;
+            $_SESSION['user_role'] = $role;
 
             echo json_encode([
                 'success' => true,
                 'message' => 'Inscription réussie et connexion automatique !',
                 'user' => [
-                    'prenom' => $prenom
+                    'prenom' => $prenom,
+                    'role'   => $role
                 ]
             ]);
         } catch (PDOException $e) {
@@ -134,17 +140,21 @@ switch ($action) {
     case 'status':
         if (isset($_SESSION['user_id'])) {
             try {
-                $stmt = $pdo->prepare('SELECT "Prenom", "Nom", "Email" FROM "utilisateur" WHERE "ID_Utilisateur" = :id');
+                $stmt = $pdo->prepare('SELECT "Prenom", "Nom", "Email", "Role" FROM "utilisateur" WHERE "ID_Utilisateur" = :id');
                 $stmt->execute(['id' => $_SESSION['user_id']]);
                 $user = $stmt->fetch();
 
                 if ($user) {
+                    // S'assurer de synchroniser le rôle en session
+                    $_SESSION['user_role'] = $user['Role'];
+                    
                     echo json_encode([
                         'logged_in' => true,
                         'user' => [
                             'prenom' => $user['Prenom'],
                             'nom'    => $user['Nom'],
-                            'email'  => $user['Email']
+                            'email'  => $user['Email'],
+                            'role'   => $user['Role']
                         ]
                     ]);
                     exit;
