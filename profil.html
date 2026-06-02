@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dawn & Sea - Mon Profil</title>
+        <!-- Bootstrap CSS -->
+        <link class="bootstrap-css" rel="stylesheet" href="assets/CSS/bootstrap.min.css">
+        <!-- Custom CSS -->
+        <link class="profil-css" rel="stylesheet" href="assets/CSS/profil.css">
+    </head>
+<body>
+    <header>
+        <div class="container-fluid px-0">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark p-2">
+                <img src="IMG/4-removebg-preview.png" alt="Mon Logo" class="navbar-brand logo-navbar">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#x">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="x" class="collapse navbar-collapse w-100 justify-content-center"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="form-container">
+                <fieldset class="bg-dark text-white">
+                    <legend>TON PROFIL</legend>
+                    <form id="SIGN-UP">
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom :</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom :</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email :</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="num_tel" class="form-label">Numéro de téléphone :</label>
+                            <input type="tel" class="form-control" id="num_tel" name="num_tel" required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="pays_naissance" class="form-label">Pays de naissance :</label>
+                            <input type="text" class="form-control" id="pays_naissance" name="pays_naissance" required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label" for="date_naissance">Date de Naissance :</label>
+                            <input class="form-control" id="date_naissance" name="date_naissance" type="date" required>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">Modifier</button>
+                            <button type="button" id="delete-profile-btn" class="btn btn-danger">Supprimer le compte</button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <article id="contact" class="d-flex justify-content-center gap-5 flex-wrap">
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/facebook-new (1).png" alt="Facebook Logo">
+                    <h3 class="text-light bg-dark">facebook</h3>
+                </div>
+                <div class="links-container">
+                    <a href="https://www.facebook.com/profile.php?id=100009239179515&locale=fr_FR" target="_blank">Benyakoub Mohammed Ryad</a>
+                    <a href="https://www.facebook.com/lmojrim.hoiry?locale=fr_FR" target="_blank">Addou Houssem Edinne Abdel Ilah</a>
+                </div>
+            </div>
+    
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/insta-white-removebg-preview.png" alt="Instagram Logo">
+                    <h3 class="text-light bg-dark">instagram</h3>
+                </div>
+                <div class="links-container">
+                    <a href="https://www.instagram.com/ryad_benyakoub?igsh=N3ZjYTF0aDBneGJw" target="_blank">Benyakoub Mohammed Ryad</a>
+                    <a href="https://www.instagram.com/a.ghy?igsh=MXR0bGIyd3BxNHU2dQ==">Addou Houssem Edinne Abdel Ilah</a>
+                </div>
+            </div>
+    
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/Gmail_icon-removebg-preview.png" alt="Email Logo">
+                    <h3 class="text-light bg-dark">email</h3>
+                </div>
+                <div class="links-container">
+                    <span>ryadbenyakoub@gmail.com</span>
+                    <span>aghy3113@gmail.com</span>
+                </div>
+            </div>
+        </article>
+        <p class="text-light bg-dark mt-3">&copy; 2025 Dawn & Sea. Tous droits réservés.</p>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="assets/JS/bootstrap.bundle.min.js"></script>
+    <script src="assets/JS/main.js"></script>
+</body>
+</html>

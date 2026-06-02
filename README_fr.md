@@ -7,6 +7,23 @@ Ce site permet aux utilisateurs de découvrir les différentes **wilayas d’Alg
 
 ---
 
+## 🏗️ Refonte Architecturale (Juin 2026)
+
+Le projet a été entièrement restructuré pour séparer la partie présentation (Frontend) et la partie logique/données (Backend) :
+
+1. **Frontend (Pages HTML + JS)** :
+   * Les pages publiques sont désormais des fichiers HTML statiques (`index.html`, `login.html`, `signup.html`, `profil.html`, `about.html`, `explore.html`) situés à la racine du projet.
+   * La logique interactive est centralisée dans le fichier [main.js](assets/JS/main.js), qui effectue des requêtes AJAX asynchrones (`fetch()`) pour récupérer les données et soumettre les formulaires sans rechargement de page.
+   * **Gardes de Route** : L'accès aux pages détaillées (`explore.html`) et au profil (`profil.html`) est sécurisé et redirige automatiquement les utilisateurs non connectés vers la page de connexion.
+   * **Barre de navigation dynamique** : La navbar s'adapte en temps réel selon l'état de connexion de l'utilisateur (affichage de "Mon Profil" et "Déconnexion" si connecté ; "Login" et "Sign Up" sinon).
+
+2. **Backend (API PHP en JSON)** :
+   * Centralisation de la connexion à la base de données dans [db.php](PHP/db.php) à l'aide de PDO.
+   * Transformation des scripts PHP en API REST renvoyant uniquement des réponses au format JSON.
+   * **Simplification et DRY** : Les fichiers PHP doublons à la racine et sous le dossier `/PHP/` ont été supprimés. Les fichiers individuels par ville (`Oran.php`, `alger.php`, etc.) ont été remplacés par un script générique [destinations.php](PHP/destinations.php) couplé à la page dynamique [explore.html](explore.html).
+
+---
+
 ## 👨‍💻 Équipe du projet
 - **Benyakoub Mohammed Ryad**  
 - **Addou Houssem Eddine Abdel Ilah**
@@ -17,24 +34,11 @@ Ce site permet aux utilisateurs de découvrir les différentes **wilayas d’Alg
 
 ## 🏖️ Fonctionnalités principales
 
-- Page principale `index.php` visible pour tous les visiteurs  
-  - Contient une **barre de navigation** et le **logo du site**  
-  - Présente plusieurs **blocs représentant chaque wilaya** avec une courte description et des photos  
-  - **Footer** avec les informations de contact
-
-- Bouton **"See details"** :  
-  - Redirige l’utilisateur vers une page détaillée sur la wilaya choisie  
-  - Si l’utilisateur n’est pas connecté, il doit **se connecter** ou **créer un compte**
-
-- **Authentification utilisateur** :  
-  - Inscription (Sign Up)  
-  - Connexion (Login)  
-  - Profil utilisateur avec accès complet aux détails des wilayas
-
-- **Page `about.php`** :  
-  - Contient une description du projet en **français** et en **anglais**
-
-- **Barre de recherche** intégrée pour faciliter la navigation
+* **Page d'accueil (`index.html`)** : Affiche les wilayas avec leurs descriptions de base et redirige vers leurs détails.
+* **Page d'exploration dynamique (`explore.html`)** : Affiche les recommandations complètes de la ville sélectionnée ou des tags sélectionnés.
+* **Authentification utilisateur** : Formulaires asynchrones pour l'inscription (`signup.html`) et la connexion (`login.html`).
+* **Profil utilisateur (`profil.html`)** : Consultation, mise à jour des informations personnelles et suppression sécurisée du compte.
+* **Filtrage par Tags** : Navigation fluide via les tags associés aux lieux recommandés (ex: Plage, Historique).
 
 ---
 
@@ -42,9 +46,8 @@ Ce site permet aux utilisateurs de découvrir les différentes **wilayas d’Alg
 
 | Type | Technologie |
 |------|--------------|
-| **Langage** | PHP |
-| **Frontend** | HTML, CSS, JavaScript |
-| **Backend** | PHP (Laravel ou pur PHP selon la version) |
+| **Frontend** | HTML5, CSS3, JavaScript (ES6 Fetch), Bootstrap 5 |
+| **Backend API** | PHP (Connexion PDO sécurisée) |
 | **Base de données** | MySQL |
 | **Serveur local** | XAMPP / Laragon |
 | **Outils** | VS Code, Git, GitHub |

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dawn & Sea - Connexion</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/CSS/bootstrap.min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/CSS/login.css">
+    </head>
+<body>
+    <header>
+        <div class="container-fluid px-0">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark p-2">
+                <img src="IMG/4-removebg-preview.png" alt="Mon Logo" class="navbar-brand logo-navbar">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#x">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="x" class="collapse navbar-collapse w-100 justify-content-center"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <fieldset class="bg-dark">
+                <legend>LOGIN</legend>
+                <form id="LOGIN">
+                    <label for="email" class="form-label">Email :</label>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="votre email">
+                    </div>
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <input type="password" class="form-control" id="password" name="password" required placeholder="votre mot de passe">
+                    </div>
+                    <div class="text-center">
+                        <a id="compte" href="signup.html">If you don't have an account</a>
+                    </div>
+                    <button style="margin-top: 15px;" type="submit" class="btn btn-success">SUBMIT</button>
+                    <button style="margin-top: 15px;" type="reset" class="btn btn-danger">CANCEL</button>
+                    
+                    <div class="text-center my-3">
+                        <span class="text-white">- OU -</span>
+                    </div>
+                    
+                    <a href="PHP/google_login.php" class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2 py-2 mb-2" style="border-color: #4285f4; color: #4285f4; background-color: white; border-radius: 4px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.69H24v8.87h12.66c-.55 2.87-2.17 5.3-4.61 6.93l7.15 5.54C43.34 36.33 46.5 30.82 46.5 24z"/>
+                            <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.15-5.54c-1.99 1.33-4.51 2.1-8.74 2.1-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <span style="color: #444; font-weight: bold; font-family: Roboto, Arial, sans-serif;">Continuer avec Google</span>
+                    </a>
+                </form>   
+            </fieldset>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <article id="contact" class="d-flex justify-content-center gap-5 flex-wrap">
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/facebook-new (1).png" alt="Facebook Logo">
+                    <h3 class="text-light bg-dark">facebook</h3>
+                </div>
+                <div class="links-container">
+                    <a href="https://www.facebook.com/profile.php?id=100009239179515&locale=fr_FR" target="_blank">Benyakoub Mohammed Ryad</a>
+                    <a href="https://www.facebook.com/lmojrim.hoiry?locale=fr_FR" target="_blank">Addou Houssem Edinne Abdel Ilah</a>
+                </div>
+            </div>
+    
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/insta-white-removebg-preview.png" alt="Instagram Logo">
+                    <h3 class="text-light bg-dark">instagram</h3>
+                </div>
+                <div class="links-container">
+                    <a href="https://www.instagram.com/ryad_benyakoub?igsh=N3ZjYTF0aDBneGJw" target="_blank">Benyakoub Mohammed Ryad</a>
+                    <a href="https://www.instagram.com/a.ghy?igsh=MXR0bGIyd3BxNHU2dQ==" target="_blank">Addou Houssem Edinne Abdel Ilah</a>
+                </div>
+            </div>
+    
+            <div class="platform">
+                <div class="logo-container">
+                    <img id="FCB_LOGO" src="IMG/Gmail_icon-removebg-preview.png" alt="Email Logo">
+                    <h3 class="text-light bg-dark">email</h3>
+                </div>
+                <div class="links-container">
+                    <span>ryadbenyakoub@gmail.com</span>
+                    <span>aghy3113@gmail.com</span>
+                </div>
+            </div>
+        </article>
+        <p class="text-light bg-dark mt-3">&copy; 2025 Dawn & Sea. Tous droits réservés.</p>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="assets/JS/bootstrap.bundle.min.js"></script>
+    <script src="assets/JS/main.js"></script>
+</body>
+</html>
