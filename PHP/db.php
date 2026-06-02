@@ -3,11 +3,11 @@
 require_once __DIR__ . '/session_config.php';
 
 // Lire les variables d'environnement (idéal sur Vercel) ou utiliser les valeurs par défaut de Supabase
-$host   = getenv('SUPABASE_DB_HOST') ?: 'db.vphwddoivieqggplqrpa.supabase.co';
+$host   = getenv('SUPABASE_DB_HOST') ?: 'aws-0-eu-west-3.pooler.supabase.com';
 $port   = getenv('SUPABASE_DB_PORT') ?: '5432';
 $dbname = getenv('SUPABASE_DB_NAME') ?: 'postgres';
-$user   = getenv('SUPABASE_DB_USER') ?: 'postgres';
-$pass   = getenv('SUPABASE_DB_PASSWORD') ?: 'VOTRE_MOT_DE_PASSE_SUPABASE_ICI';
+$user   = getenv('SUPABASE_DB_USER') ?: 'postgres.vphwddoivieqggplqrpa';
+$pass   = getenv('SUPABASE_DB_PASSWORD') ?: 'mohammedryad2026';
 
 try {
     // Connexion PostgreSQL pour Supabase

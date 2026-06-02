@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS "utilisateur" (
     "Nom" VARCHAR(30) DEFAULT NULL,
     "Prenom" VARCHAR(30) DEFAULT NULL,
     "Email" VARCHAR(50) UNIQUE DEFAULT NULL,
-    "Mot_de_passe" VARCHAR(50) DEFAULT NULL,
+    "Mot_de_passe" VARCHAR(255) DEFAULT NULL,
     "Num_de_telephone" VARCHAR(50) DEFAULT NULL,
     "Pays_de_naissance" VARCHAR(50) DEFAULT NULL,
     "Date_de_naissance" DATE DEFAULT NULL,
