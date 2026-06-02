@@ -28,6 +28,12 @@ async function initApp() {
         } else {
             initSignupPage();
         }
+    } else if (page === 'forgot_password.html') {
+        if (session.logged_in) {
+            window.location.href = 'index.html';
+        } else {
+            initForgotPasswordPage();
+        }
     } else if (page === 'profil.html') {
         if (!session.logged_in) {
             window.location.href = 'login.html';
@@ -741,5 +747,51 @@ async function deleteUser(userId) {
             showToast("Erreur lors de la suppression de l'utilisateur.", "danger");
         }
     }
+}
+
+// 12. Page de Récupération de Mot de passe oublié
+function initForgotPasswordPage() {
+    const form = document.getElementById('FORGOT-PASSWORD');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        if (data.password !== data.password_confirmation) {
+            showToast('Les mots de passe ne correspondent pas.', 'danger');
+            return;
+        }
+
+        if (data.password.length < 6) {
+            showToast('Le nouveau mot de passe doit faire au moins 6 caractères.', 'danger');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/auth.php?action=reset_password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Erreur serveur (${response.status}) : ${errorText}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                window.location.href = 'login.html';
+            } else {
+                showToast(result.message, 'danger');
+            }
+        } catch (error) {
+            showToast("Une erreur est survenue lors du rétablissement : " + error.message, 'danger');
+        }
+    });
 }
 

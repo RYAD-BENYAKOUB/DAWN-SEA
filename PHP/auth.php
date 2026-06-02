@@ -172,6 +172,58 @@ switch ($action) {
         echo json_encode(['success' => true, 'message' => 'Déconnexion réussie.']);
         break;
 
+    case 'reset_password':
+        $email      = trim($input['email'] ?? '');
+        $dateNaiss  = trim($input['date_naissance'] ?? '');
+        $pays       = trim($input['pays_naissance'] ?? '');
+        $password   = $input['password'] ?? '';
+        $password_c = $input['password_confirmation'] ?? '';
+
+        if (empty($email) || empty($dateNaiss) || empty($pays) || empty($password)) {
+            echo json_encode(['success' => false, 'message' => 'Tous les champs sont obligatoires.']);
+            exit;
+        }
+
+        if ($password !== $password_c) {
+            echo json_encode(['success' => false, 'message' => 'Les mots de passe ne correspondent pas.']);
+            exit;
+        }
+
+        if (strlen($password) < 6) {
+            echo json_encode(['success' => false, 'message' => 'Le nouveau mot de passe doit faire au moins 6 caractères.']);
+            exit;
+        }
+
+        try {
+            // Vérifier si un utilisateur correspond à l'email, pays de naissance et date de naissance
+            $stmt = $pdo->prepare('
+                SELECT "ID_Utilisateur" FROM "utilisateur" 
+                WHERE "Email" = :email 
+                  AND "Pays_de_naissance" ILIKE :pays 
+                  AND "Date_de_naissance" = :dateNaiss
+            ');
+            $stmt->execute([
+                'email'     => $email,
+                'pays'      => $pays,
+                'dateNaiss' => $dateNaiss
+            ]);
+            $userId = $stmt->fetchColumn();
+
+            if ($userId) {
+                // Mettre à jour le mot de passe
+                $hashed = password_hash($password, PASSWORD_DEFAULT);
+                $stmtUpdate = $pdo->prepare('UPDATE "utilisateur" SET "Mot_de_passe" = :mdp WHERE "ID_Utilisateur" = :id');
+                $stmtUpdate->execute(['mdp' => $hashed, 'id' => $userId]);
+
+                echo json_encode(['success' => true, 'message' => 'Votre mot de passe a été réinitialisé avec succès !']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Les informations fournies ne correspondent à aucun compte.']);
+            }
+        } catch (PDOException $e) {
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de la réinitialisation : ' . $e->getMessage()]);
+        }
+        break;
+
     default:
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Action non spécifiée ou invalide.']);
