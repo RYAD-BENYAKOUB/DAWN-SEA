@@ -3,8 +3,9 @@
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/db.php';
 
-$ville = $_GET['ville'] ?? '';
-$tag   = $_GET['tag'] ?? '';
+$ville  = $_GET['ville'] ?? '';
+$tag    = $_GET['tag'] ?? '';
+$search = $_GET['search'] ?? '';
 
 // Helper pour récupérer tous les tags liés à une recommandation
 function getRecommendationTags($pdo, $idRecommandation) {
@@ -23,6 +24,7 @@ function getRecommendationTags($pdo, $idRecommandation) {
 
 try {
     $recommandations = [];
+    $recs = [];
 
     if ($ville) {
         // Rechercher par ville
@@ -34,25 +36,6 @@ try {
         ");
         $stmt->execute(['ville' => "%$ville%"]);
         $recs = $stmt->fetchAll();
-
-        foreach ($recs as $rec) {
-            // Encoder l'image BLOB en base64 pour l'intégrer au JSON
-            $imageData = null;
-            if (!empty($rec['Image'])) {
-                $imageData = 'data:image/jpeg;base64,' . base64_encode($rec['Image']);
-            }
-
-            $recommandations[] = [
-                'id'           => $rec['ID_Recommandation'],
-                'titre'        => $rec['Titre'],
-                'description'  => $rec['Description'],
-                'note'         => $rec['Note_Generale'],
-                'lieu_nom'     => $rec['lieu_nom'],
-                'address'      => $rec['Address'],
-                'image'        => $imageData,
-                'tags'         => getRecommendationTags($pdo, $rec['ID_Recommandation'])
-            ];
-        }
     } elseif ($tag) {
         // Rechercher par tag
         $stmt = $pdo->prepare("
@@ -65,27 +48,43 @@ try {
         ");
         $stmt->execute(['tag' => $tag]);
         $recs = $stmt->fetchAll();
-
-        foreach ($recs as $rec) {
-            $imageData = null;
-            if (!empty($rec['Image'])) {
-                $imageData = 'data:image/jpeg;base64,' . base64_encode($rec['Image']);
-            }
-
-            $recommandations[] = [
-                'id'           => $rec['ID_Recommandation'],
-                'titre'        => $rec['Titre'],
-                'description'  => $rec['Description'],
-                'note'         => $rec['Note_Generale'],
-                'lieu_nom'     => $rec['lieu_nom'],
-                'address'      => $rec['Address'],
-                'image'        => $imageData,
-                'tags'         => getRecommendationTags($pdo, $rec['ID_Recommandation'])
-            ];
-        }
+    } elseif ($search) {
+        // Recherche globale (ville, tag, titre de recommandation, ou nom de lieu)
+        $stmt = $pdo->prepare("
+            SELECT DISTINCT r.*, l.Nom AS lieu_nom, l.Image, l.Address
+            FROM recommandation r
+            JOIN lieu l ON r.ID_Lieu = l.ID_Lieu
+            LEFT JOIN recommandation_tag rt ON r.ID_Recommandation = rt.ID_Recommandation
+            LEFT JOIN tag t ON rt.ID_Tag = t.ID_Tag
+            WHERE l.Address LIKE :q
+               OR t.Nom LIKE :q
+               OR r.Titre LIKE :q
+               OR l.Nom LIKE :q
+        ");
+        $stmt->execute(['q' => "%$search%"]);
+        $recs = $stmt->fetchAll();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Veuillez spécifier une ville ou un tag.']);
+        echo json_encode(['success' => false, 'message' => 'Veuillez spécifier une ville, un tag ou une recherche.']);
         exit;
+    }
+
+    foreach ($recs as $rec) {
+        // Encoder l'image BLOB en base64 pour l'intégrer au JSON
+        $imageData = null;
+        if (!empty($rec['Image'])) {
+            $imageData = 'data:image/jpeg;base64,' . base64_encode($rec['Image']);
+        }
+
+        $recommandations[] = [
+            'id'           => $rec['ID_Recommandation'],
+            'titre'        => $rec['Titre'],
+            'description'  => $rec['Description'],
+            'note'         => $rec['Note_Generale'],
+            'lieu_nom'     => $rec['lieu_nom'],
+            'address'      => $rec['Address'],
+            'image'        => $imageData,
+            'tags'         => getRecommendationTags($pdo, $rec['ID_Recommandation'])
+        ];
     }
 
     echo json_encode([

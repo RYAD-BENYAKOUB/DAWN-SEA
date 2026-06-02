@@ -118,12 +118,12 @@ async function handleLogout() {
     }
 }
 
-// 4. Recherche par tag
+// 4. Recherche globale (ville, tag, lieu)
 function handleSearch(event) {
     event.preventDefault();
     const query = document.getElementById('search-input').value.trim();
     if (query) {
-        window.location.href = `explore.html?tag=${encodeURIComponent(query)}`;
+        window.location.href = `explore.html?search=${encodeURIComponent(query)}`;
     }
 }
 
@@ -305,11 +305,12 @@ function initIndexPage(loggedIn) {
     }
 }
 
-// 9. Page d'Exploration dynamique (Ville ou Tag)
+// 9. Page d'Exploration dynamique (Ville, Tag ou Recherche)
 async function initExplorePage() {
     const params = new URLSearchParams(window.location.search);
     const ville = params.get('ville');
     const tag = params.get('tag');
+    const search = params.get('search');
 
     const titleContainer = document.getElementById('explore-title');
     const cardsContainer = document.getElementById('explore-cards');
@@ -323,6 +324,9 @@ async function initExplorePage() {
     } else if (tag) {
         titleContainer.innerHTML = `Résultats pour le tag : <span class="text-danger fw-bolder">"${escapeHTML(tag)}"</span>`;
         apiURL = `${API_BASE}/destinations.php?tag=${encodeURIComponent(tag)}`;
+    } else if (search) {
+        titleContainer.innerHTML = `Résultats pour : <span class="text-danger fw-bolder">"${escapeHTML(search)}"</span>`;
+        apiURL = `${API_BASE}/destinations.php?search=${encodeURIComponent(search)}`;
     } else {
         titleContainer.innerHTML = `Aucune sélection`;
         cardsContainer.innerHTML = `<p class="text-light">Aucune destination ou thématique n'a été sélectionnée.</p>`;
