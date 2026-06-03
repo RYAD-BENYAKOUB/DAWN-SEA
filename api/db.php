@@ -1,6 +1,5 @@
 <?php
 // PHP/db.php
-require_once __DIR__ . '/session_config.php';
 require_once __DIR__ . '/load_env.php';
 
 // Lire les variables d'environnement (configurées via .env en local, ou définies sur Vercel en production)
@@ -36,3 +35,5 @@ try {
     ]);
     exit;
 }
+
+require_once __DIR__ . '/session_config.php';
