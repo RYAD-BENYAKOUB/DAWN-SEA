@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Constante pour l'URL de base des scripts d'API
-const API_BASE = 'PHP';
+const API_BASE = 'api';
 
 // Fonction d'initialisation de l'application
 async function initApp() {
