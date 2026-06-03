@@ -57,6 +57,9 @@ async function initApp() {
     } else if (page === 'index.html' || page === '') {
         initIndexPage(session.logged_in);
     }
+
+    // Initialiser le bouton Retour en haut (Back to Top)
+    initBackToTop();
 }
 
 // 1. Vérification de la Session
@@ -792,6 +795,73 @@ function initForgotPasswordPage() {
         } catch (error) {
             showToast("Une erreur est survenue lors du rétablissement : " + error.message, 'danger');
         }
+    });
+}
+
+// 13. Bouton Retour en haut (Back to Top)
+function initBackToTop() {
+    // Injecter les styles CSS pour le bouton
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #back-to-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+            z-index: 9999;
+        }
+        #back-to-top-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #back-to-top-btn:hover {
+            background-color: #ffc107;
+            color: #111;
+            transform: translateY(-5px) scale(1.05);
+        }
+        #back-to-top-btn:active {
+            transform: translateY(-2px) scale(0.95);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Créer l'élément de bouton
+    const btn = document.createElement('button');
+    btn.id = 'back-to-top-btn';
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">' +
+        '<path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>' +
+        '</svg>';
+    btn.setAttribute('aria-label', 'Retour en haut');
+    document.body.appendChild(btn);
+
+    // Gérer la visibilité au défilement
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    });
+
+    // Gérer le clic pour le défilement fluide
+    btn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 }
 

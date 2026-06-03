@@ -187,13 +187,39 @@ nav.navbar {
     }
 }
 
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floatTitle1 {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes floatTitle2 {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes pulseTitle3 {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.98); opacity: 0.85; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 .animate-title-1 {
     opacity: 0;
     display: inline-block;
-    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 0.2s;
-    background: linear-gradient(45deg, #111111, #dc3545, #ffc107, #111111);
-    background-size: 300% 300%;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+               gradientShift 8s ease infinite,
+               floatTitle1 4s ease-in-out infinite;
+    animation-delay: 0.2s, 0s, 1s; /* floating starts after load fade-in */
+    background: linear-gradient(45deg, #111111, #dc3545, #0d6efd, #ffc107, #111111);
+    background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -201,17 +227,21 @@ nav.navbar {
 }
 
 .animate-title-1:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-5px);
 }
 
 .animate-title-2 {
     opacity: 0;
-    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 0.5s;
+    display: inline-block;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+               floatTitle2 4s ease-in-out infinite;
+    animation-delay: 0.5s, 1.3s;
 }
 
 .animate-title-3 {
     opacity: 0;
-    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 0.8s;
+    display: inline-block;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+               pulseTitle3 4s ease-in-out infinite;
+    animation-delay: 0.8s, 1.6s;
 }
