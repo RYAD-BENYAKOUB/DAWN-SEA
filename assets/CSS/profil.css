@@ -37,18 +37,13 @@ h3{
     color: azure;
 }
    
-nav{
-    margin-left: 90px;
-    position:fixed;
+#SRCH {
+    margin-left: 0;
 }
-#SRCH{
-    margin-left: 150px;
-}
-#Login{
-    margin-left: 20px;
-}
-#Sign{
-    margin-left: 10px; 
+@media (min-width: 768px) {
+    #SRCH {
+        margin-left: 20px;
+    }
 }
 legend{
     text-decoration: underline;
@@ -84,19 +79,28 @@ label{
     text-decoration: none;
     color: azure;
     font-size: 14px;
-    margin-right:1000px ;
+    margin-right: 0;
 }
 
 fieldset {
     border-radius: 15px;
     border: 3px solid white;
-    padding: 40px;
-    margin-top: 100px;
-    margin-left: 200px;
-    width: max-content;
+    padding: 20px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+@media (min-width: 768px) {
+    fieldset {
+        padding: 40px;
+        margin-top: 80px;
+    }
 }
 #SIGN-UP{
-    width: 600px;
+    width: 100%;
 }
 #contact {
     margin-top: 30px;
@@ -129,9 +133,7 @@ nav.navbar {
     width: 100%;      /* occupe toute la largeur */
     margin: 0 auto;   /* centre si nécessaire */
     border-radius: 0; /* supprime les bords arrondis */
-    left: 0;
-    right: 0;
     z-index: 1000;    /* s'assure qu'elle passe au-dessus */
-    position: fixed;
+    position: sticky;
     top: 0;
 }

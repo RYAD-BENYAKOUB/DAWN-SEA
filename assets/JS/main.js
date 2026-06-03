@@ -79,7 +79,7 @@ function updateNavbar(session) {
 
     // Vider et recréer les éléments de navigation dynamiques
     let navHTML = `
-        <ul class="navbar-nav d-flex gap-4 align-items-center">
+        <ul class="navbar-nav gap-2 gap-md-4 align-items-center justify-content-center flex-column flex-md-row w-100 my-2 my-md-0">
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
@@ -104,9 +104,9 @@ function updateNavbar(session) {
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </li>
-            <span class="navbar-text text-white ms-3">
+            <li class="nav-item navbar-text text-white ms-0 ms-md-3">
                 Bienvenue, <strong>${escapeHTML(session.user.prenom)}</strong>
-            </span>
+            </li>
         `;
     } else {
         navHTML += `
