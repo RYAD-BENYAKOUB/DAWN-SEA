@@ -4,11 +4,12 @@ require_once __DIR__ . '/session_config.php';
 require_once __DIR__ . '/load_env.php';
 
 // Lire les variables d'environnement (configurées via .env en local, ou définies sur Vercel en production)
-$host   = getenv('SUPABASE_DB_HOST');
-$port   = getenv('SUPABASE_DB_PORT') ?: '5432';
-$dbname = getenv('SUPABASE_DB_NAME') ?: 'postgres';
-$user   = getenv('SUPABASE_DB_USER');
-$pass   = getenv('SUPABASE_DB_PASSWORD');
+// Nous appliquons trim() pour éliminer les espaces ou retours à la ligne invisibles lors du copier-coller.
+$host   = trim(getenv('SUPABASE_DB_HOST') ?: '');
+$port   = '5432'; // Port de connexion Session du pooler Supabase
+$dbname = 'postgres'; // Base de données par défaut de Supabase
+$user   = trim(getenv('SUPABASE_DB_USER') ?: '');
+$pass   = trim(getenv('SUPABASE_DB_PASSWORD') ?: '');
 
 if (!$host || !$user || !$pass) {
     header('Content-Type: application/json; charset=utf-8');
