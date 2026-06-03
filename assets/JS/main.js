@@ -79,7 +79,7 @@ function updateNavbar(session) {
 
     // Vider et recréer les éléments de navigation dynamiques
     let navHTML = `
-        <ul class="navbar-nav gap-2 gap-md-4 align-items-center justify-content-center flex-column flex-md-row w-100 my-2 my-md-0">
+        <ul class="navbar-nav gap-2 gap-md-4 align-items-center flex-column flex-md-row ms-auto my-2 my-md-0">
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
