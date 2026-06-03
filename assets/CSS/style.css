@@ -173,3 +173,45 @@ nav.navbar {
         margin-left: 20px;
     }
 }
+
+/* --- ANIMATIONS DES TITRES (INDEX) --- */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-title-1 {
+    opacity: 0;
+    display: inline-block;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.2s;
+    background: linear-gradient(45deg, #111111, #dc3545, #ffc107, #111111);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: transform 0.3s ease;
+}
+
+.animate-title-1:hover {
+    transform: scale(1.05);
+}
+
+.animate-title-2 {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.5s;
+}
+
+.animate-title-3 {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.8s;
+}
