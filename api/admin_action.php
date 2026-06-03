@@ -41,8 +41,8 @@ switch ($action) {
 
     case 'get_users':
         try {
-            // Récupérer la liste des utilisateurs sans le mot de passe
-            $stmt = $pdo->query('SELECT "ID_Utilisateur", "Nom", "Prenom", "Email", "Num_de_telephone", "Pays_de_naissance", "Date_de_naissance", "Role" FROM "utilisateur" ORDER BY "ID_Utilisateur" ASC');
+            // Récupérer la liste des utilisateurs sans le mot de passe, avec des alias en minuscules
+            $stmt = $pdo->query('SELECT "ID_Utilisateur" AS id, "Nom" AS nom, "Prenom" AS prenom, "Email" AS email, "Num_de_telephone" AS num_de_telephone, "Pays_de_naissance" AS pays_de_naissance, "Date_de_naissance" AS date_de_naissance, "Role" AS role FROM "utilisateur" ORDER BY id ASC');
             $users = $stmt->fetchAll();
             echo json_encode(['success' => true, 'data' => $users]);
         } catch (PDOException $e) {
